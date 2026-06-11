@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>temanbelajar.id - Ruang Fokus & Manajemen Tugas Mahasiswa</title>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono for clean reading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Animate.css for smooth transitions -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --dark-bg: #030712;
+            --dark-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --cyan-accent: #38bdf8;
+            --cyan-glow: rgba(56, 189, 248, 0.45);
+            --emerald-accent: #34d399;
+            --text-muted: #94a3b8;
+            --text-light: #f8fafc;
+            --text-bright: #ffffff;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #0f172a 0%, #030712 70%);
+            background-attachment: fixed;
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        /* Ambient Glow Backdrops */
+        .ambient-glow-1 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            top: -50px;
+            left: -50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism Styles with High Contrast Borders */
+        .glass-card {
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 15px 45px 0 rgba(56, 189, 248, 0.12);
+        }
+
+        /* Crisp Typography Details */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-bright);
+            letter-spacing: -0.02em;
+        }
+
+        .text-cyan {
+            color: var(--cyan-accent);
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+            font-weight: 700;
+        }
+
+        .text-muted-custom {
+            color: #cbd5e1 !important; /* Brighter slate for high readability on dark card background */
+            font-weight: 400;
+        }
+
+        /* High-Contrast Interactive Buttons */
+        .btn-cyan {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: #030712;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--cyan-glow);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 20px;
+        }
+
+        .btn-cyan:hover {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.7);
+            color: #030712;
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-bright);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--cyan-accent);
+            border-color: var(--cyan-accent);
+            transform: translateY(-1px);
+        }
+
+        /* Custom Modern Form Inputs */
+        .form-control, .form-select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-bright);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--cyan-accent);
+            color: var(--text-bright);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+        }
+
+        /* HIGH CONTRAST SEARCH INPUT FIX */
+        #search-task {
+            background-color: #ffffff !important;
+            color: #030712 !important;
+            border: 2px solid var(--cyan-accent) !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        #search-task::placeholder {
+            color: #4b5563 !important; /* Darker placeholder for readability */
+            font-weight: 500;
+        }
+
+        /* Advanced Habit Tracker UI */
+        .habit-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .habit-day-btn {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .habit-day-btn .day-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+
+        .habit-day-btn .day-status {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .habit-day-btn:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--cyan-accent);
+            transform: scale(1.05);
+        }
+
+        .habit-day-btn.completed {
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
+        }
+
+        .habit-day-btn.completed .day-label {
+            color: #030712;
+            font-weight: 800;
+        }
+
+        .habit-day-btn.completed .day-status {
+            color: #030712;
+        }
+
+        /* GOOGLE TRANSLATE STYLING INTEGRATION (BRANDLESS & MINIMALIST) */
+        .goog-te-gadget {
+            font-size: 0px !important; /* Menyembunyikan tulisan "Powered by" */
+            color: transparent !important;
+        }
+        .goog-te-gadget span {
+            display: none !important; /* Menyembunyikan separator teks google */
+        }
+        .goog-logo-link, .goog-logo-link:link, .goog-logo-link:visited, .goog-logo-link:hover, .goog-logo-link:active {
+            display: none !important; /* Menyembunyikan gambar logo Google */
+        }
+        .goog-te-gadget-simple {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid var(--border-color) !important;
+            padding: 8px 12px !important;
+            border-radius: 12px !important;
+            width: 100%;
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .goog-te-gadget-simple img {
+            display: none !important; /* Menyembunyikan ikon logo Google kecil di dalam widget */
+        }
+        .goog-te-gadget-simple a, .goog-te-menu-value span {
+            color: var(--text-light) !important;
+            font-size: 0.85rem !important;
+            text-decoration: none !important;
+        }
+        .goog-te-banner-frame {
+            display: none !important; /* Menyembunyikan bar terjemahan atas yang mengganggu */
+        }
+        body {
+            top: 0px !important; /* Memperbaiki geseran layout akibat banner translate */
+        }
+
+        /* NOTE TAB STYLING */
+        .note-list-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .note-list-item:hover, .note-list-item.active {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--cyan-accent);
+        }
+
+        /* Task Command Center Cards */
+        .task-item-card {
+            background: rgba(17, 24, 39, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .task-item-card:hover {
+            background: rgba(17, 24, 39, 0.7);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: scale(1.005);
+        }
+
+        /* Priority Colors (Contrast Boosted) */
+        .priority-tinggi {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            font-weight: 700;
+        }
+        .priority-sedang {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #fde047;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            font-weight: 700;
+        }
+        .priority-rendah {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            font-weight: 700;
+        }
+
+        /* Deep Work Overlay (Zen Mode Shield) */
+        #zen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .zen-timer-circle {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #030712 100%);
+            border: 2px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 0 0 80px rgba(56, 189, 248, 0.15);
+        }
+
+        .zen-glow-ring {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan-accent);
+            opacity: 0.2;
+            animation: pulse-ring 4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.98); opacity: 0.15; filter: blur(0px); }
+            50% { transform: scale(1.04); opacity: 0.5; filter: blur(6px); }
+            100% { transform: scale(0.98); opacity: 0.15; filter: blur(0px); }
+        }
+
+        #visualizer-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.18;
+            z-index: 1;
+        }
+
+        /* Core Memo Typography */
+        #core-memo-textarea {
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
+            background: rgba(10, 15, 30, 0.7);
+            border-color: rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 10050;
+        }
+
+        .glass-toast {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--cyan-accent);
+            color: var(--text-bright);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(56, 189, 248, 0.25);
+        }
+
+        /* SIDEBAR LAYOUT STYLES */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: rgba(10, 15, 30, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-right: 1px solid var(--border-color);
+            z-index: 1030;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Collapsed Sidebar on Mobile */
+        @media (max-width: 991.98px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            #sidebar.active {
+                transform: translateX(0);
+            }
+            #main-content-wrapper {
+                margin-left: 0 !important;
+            }
+        }
+
+        #main-content-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-content-wrapper.full-width {
+            margin-left: 0;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            margin: 4px 16px;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+        }
+
+        .sidebar-link.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--cyan-accent);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        /* LOGIN SCREEN OVERLAY */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 30%, #0f172a 0%, #030712 100%);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 450px;
+            width: 90%;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Confetti for Level Up Celebration -->
+    <canvas id="confetti-canvas" style="display:none;"></canvas>
+
+    <!-- Ambient background light spot -->
+    <div class="ambient-glow-1"></div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="animate__animated">
+        <div class="glass-card login-card text-center animate__animated animate__zoomIn">
+            <div class="mb-4">
+                <div class="d-inline-flex bg-cyan-glow p-3 rounded-4 mb-3" style="background: rgba(56,189,248,0.15); border: 1.5px solid rgba(56,189,248,0.4)">
+                    <i class="bi bi-mortarboard-fill text-cyan" style="font-size: 3rem;"></i>
+                </div>
+                <h2 class="fw-extrabold text-white tracking-tight fs-3">Selamat Datang di <span class="text-cyan">temanbelajar.id</span></h2>
+                <p class="text-muted-custom small">Ruang Fokus Belajar & Manajemen Tugas Terintegrasi</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="mb-3 text-start">
+                    <label class="form-label text-white-50 small fw-semibold">Nama Panggilan</label>
+                    <input type="text" id="login-username" class="form-control" placeholder="Masukkan nama panggilan Anda" maxlength="20" required>
+                </div>
+                <div class="mb-4 text-start">
+                    <label class="form-label text-white-50 small fw-semibold">Kata Sandi (Opsional)</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" disabled value="demopassword">
+                    <span class="text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-info-circle"></i> Mode Demo: Kata sandi dinonaktifkan untuk akses instan</span>
+                </div>
+                <button type="submit" class="btn btn-cyan w-100 py-3 fs-6 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Masuk & Mulai Belajar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- APP WRAPPER LAYOUT (Hidden initially, shown after login) -->
+    <div id="app-wrapper" class="d-none">
+        
+        <!-- SIDEBAR LEFT -->
+        <aside id="sidebar">
+            <div class="py-4 px-3 d-flex align-items-center justify-content-between">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                    <div class="bg-cyan-glow p-2 rounded-3 d-flex align-items-center justify-content-center" style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3)">
+                        <i class="bi bi-mortarboard-fill text-cyan fs-4"></i>
+                    </div>
+                    <div>
+                        <span class="fw-extrabold fs-5 text-white tracking-tight">temanbelajar<span class="text-cyan">.id</span></span>
+                        <span class="d-block text-muted" style="font-size: 0.65rem; letter-spacing: 1.5px; font-weight: 700;">PROTOTYPE PWA</span>
+                    </div>
+                </a>
+                <!-- Close menu button (Only visible on mobile) -->
+                <button class="btn btn-outline-light border-0 d-lg-none" id="btn-close-sidebar-mobile">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-grow-1 mt-3">
+                <a href="#" class="sidebar-link active" data-tab="dashboard">
+                    <i class="bi bi-speedometer2 fs-5"></i> Dashboard
+                </a>
+                <a href="#" class="sidebar-link" data-tab="pusat-tugas">
+                    <i class="bi bi-kanban fs-5"></i> Pusat Tugas
+                </a>
+                <a href="#" class="sidebar-link" data-tab="tracker-rutinitas">
+                    <i class="bi bi-calendar-check fs-5"></i> Tracker Rutinitas
+                </a>
+                <a href="#" class="sidebar-link" data-tab="catatan">
+                    <i class="bi bi-journal-richtext fs-5"></i> Catatan Belajar
+                </a>
+                <a href="#" class="sidebar-link" data-tab="deep-work">
+                    <i class="bi bi-shield-shaded fs-5"></i> Deep Work Shield
+                </a>
+            </nav>
+
+            <!-- Google Translate Widget Container -->
+            <div class="px-3 mb-3">
+                <span class="text-white-50 small fw-bold d-block mb-2 px-1"><i class="bi bi-translate"></i> BAHASA</span>
+                <div id="google_translate_element"></div>
+            </div>
+
+            <!-- User profile summary on bottom sidebar -->
+            <div class="p-3 border-top border-secondary border-opacity-10">
+                <div class="d-flex align-items-center gap-3 p-2 rounded-4" style="background: rgba(17, 24, 39, 0.8); border: 1px solid var(--border-color);">
+                    <div class="avatar bg-cyan-glow rounded-circle d-flex align-items-center justify-content-center text-cyan fw-bold" style="width: 38px; height: 38px; background: rgba(56,189,248,0.25); font-size: 0.95rem;" id="avatar-initial">
+                        -
+                    </div>
+                    <div class="overflow-hidden flex-grow-1">
+                        <span class="fw-bold text-white d-block text-truncate" id="sidebar-user-name" style="font-size: 0.85rem;">User</span>
+                        <span class="text-muted d-block small" id="sidebar-user-level">Level 1</span>
+                    </div>
+                    <button class="btn btn-outline-danger border-0 p-1" id="btn-logout" title="Keluar Akun">
+                        <i class="bi bi-power fs-5"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <div id="main-content-wrapper">
+            
+            <!-- Top Navbar for Toggle & XP Info -->
+            <nav class="navbar navbar-expand-lg glass-card m-3 py-3 px-4 z-2">
+                <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Hamburger Toggle Button -->
+                        <button class="btn btn-outline-light border-0" id="btn-sidebar-toggle">
+                            <i class="bi bi-list fs-3 text-cyan"></i>
+                        </button>
+                        <h4 class="fw-extrabold m-0 text-white tracking-tight" id="navbar-page-title">Dashboard</h4>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Gamifikasi Level Progress -->
+                        <div class="d-flex align-items-center gap-3 px-3 py-2 rounded-4" style="border: 1px solid var(--border-color); background: rgba(17, 24, 39, 0.8);">
+                            <div class="d-flex flex-column align-items-end justify-content-center">
+                                <span class="fw-bold text-white mb-1" style="font-size: 0.85rem;" id="user-display-level">Level 1</span>
+                                <div class="progress" style="width: 90px; height: 8px; background-color: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                    <div id="user-display-xp-bar" class="progress-bar bg-info" role="progressbar" style="width: 0%; transition: width 0.4s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- CONTENT VIEWS (Rendered dynamically based on active Tab) -->
+            <div class="container-fluid px-4 pb-5 flex-grow-1">
+                
+                <!-- VIEW 1: DASHBOARD -->
+                <div id="view-dashboard" class="tab-content animate__animated animate__fadeIn">
+                    <div class="row g-4">
+                        <div class="col-lg-12">
+                            <!-- Greeting Card -->
+                            <div class="glass-card p-4 mb-1">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                    <div>
+                                        <h2 class="fw-bold mb-1 fs-3">Selamat Belajar, <span class="text-cyan" id="greet-name">Pejuang Sukses</span>!</h2>
+                                        <p class="text-muted-custom mb-0">"Satu langkah kecil hari ini adalah awal kesuksesan besar esok hari."</p>
+                                    </div>
+                                    <div class="d-flex gap-3">
+                                        <div class="text-center px-4 py-3 bg-opacity-10 bg-white rounded-4 border border-secondary border-opacity-10" style="background: rgba(255, 255, 255, 0.03);">
+                                            <span class="d-block text-cyan fw-extrabold fs-3" id="stats-tasks-completed">0</span>
+                                            <span class="text-muted-custom" style="font-size: 0.75rem; font-weight: 700;">TUGAS SELESAI</span>
+                                        </div>
+                                        <div class="text-center px-4 py-3 bg-opacity-10 bg-white rounded-4 border border-secondary border-opacity-10" style="background: rgba(255, 255, 255, 0.03);">
+                                            <span class="d-block text-cyan fw-extrabold fs-3" id="stats-zen-minutes">0</span>
+                                            <span class="text-muted-custom" style="font-size: 0.75rem; font-weight: 700;">MENIT FOKUS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Left Panel: Task Reminders & Habit Ringkasan -->
+                        <div class="col-lg-8">
+                            <div class="row g-4">
+                                <!-- Pengingat Tugas Aktif -->
+                                <div class="col-12">
+                                    <div class="glass-card p-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <h4 class="fw-bold m-0 fs-5 text-warning"><i class="bi bi-bell-fill me-2 animate__animated animate__swing animate__infinite"></i> Pengingat Tugas Mendesak</h4>
+                                            <button class="btn btn-glass btn-sm" onclick="switchTab('pusat-tugas')">Lihat Semua</button>
+                                        </div>
+                                        <div id="dashboard-task-reminders" class="d-flex flex-column gap-2">
+                                            <!-- Dynamically inserted pending tasks -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ringkasan Kebiasaan & Materi Hari Ini -->
+                                <div class="col-12">
+                                    <div class="glass-card p-4">
+                                        <h4 class="fw-bold mb-3 fs-5 text-cyan"><i class="bi bi-clipboard2-data-fill me-2"></i> Rutinitas Belajar Hari Ini</h4>
+                                        <div class="row g-3">
+                                            <!-- Selesai -->
+                                            <div class="col-md-4">
+                                                <div class="p-3 rounded-4 bg-success bg-opacity-10 border border-success border-opacity-25 h-100">
+                                                    <span class="text-success fw-bold d-block mb-1"><i class="bi bi-check2-circle"></i> Sudah Dilakukan</span>
+                                                    <div id="habits-done-list" class="small text-muted-custom d-flex flex-column gap-1">
+                                                        <!-- Completed habits list -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Belum -->
+                                            <div class="col-md-4">
+                                                <div class="p-3 rounded-4 bg-danger bg-opacity-10 border border-danger border-opacity-25 h-100">
+                                                    <span class="text-danger fw-bold d-block mb-1"><i class="bi bi-clock"></i> Belum Dilakukan</span>
+                                                    <div id="habits-pending-list" class="small text-muted-custom d-flex flex-column gap-1">
+                                                        <!-- Pending habits list -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Wajib -->
+                                            <div class="col-md-4">
+                                                <div class="p-3 rounded-4 bg-info bg-opacity-10 border border-info border-opacity-25 h-100">
+                                                    <span class="text-cyan fw-bold d-block mb-1"><i class="bi bi-exclamation-triangle-fill"></i> Wajib Dilakukan</span>
+                                                    <div id="habits-mandatory-list" class="small text-muted-custom d-flex flex-column gap-1">
+                                                        <!-- Mandatory habits list -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Panel: Motivation -->
+                        <div class="col-lg-4">
+                            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h4 class="fw-bold m-0 fs-5 text-cyan"><i class="bi bi-lightning-charge-fill me-1"></i> Motivasi Pejuang</h4>
+                                    <button class="btn btn-outline-light border-0 btn-sm p-1" id="btn-refresh-quote" title="Motivasi Baru">
+                                        <i class="bi bi-arrow-clockwise fs-5"></i>
+                                    </button>
+                                </div>
+                                <div class="my-auto py-3">
+                                    <p class="fst-italic text-white fs-5 mb-3" id="dashboard-quote-text">"Loading motivasi..."</p>
+                                    <span class="d-block text-end text-cyan fw-bold small" id="dashboard-quote-author">-</span>
+                                </div>
+                                <div class="mt-4 p-3 rounded-4 bg-dark bg-opacity-50 border border-secondary border-opacity-10">
+                                    <p class="text-white-50 small mb-0"><i class="bi bi-info-circle me-1"></i> Setiap kemajuan rutinitas & tugas yang berhasil diselesaikan akan meningkatkan level Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: PUSAT TUGAS -->
+                <div id="view-pusat-tugas" class="tab-content d-none animate__animated animate__fadeIn">
+                    <div class="glass-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-kanban text-cyan fs-4"></i>
+                                <h4 class="fw-bold m-0 fs-5">Pusat Komando Tugas</h4>
+                            </div>
+                            <button class="btn btn-cyan btn-sm px-3 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <i class="bi bi-plus-lg"></i> Tambah Tugas
+                            </button>
+                        </div>
+
+                        <!-- Filters and Search -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-7">
+                                <div class="position-relative">
+                                    <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-dark"></i>
+                                    <input type="text" id="search-task" class="form-control ps-5" placeholder="CARI TUGAS KULIAH ATAU PROYEK DI SINI...">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <select id="filter-priority" class="form-select">
+                                    <option value="all">Semua Prioritas</option>
+                                    <option value="Tinggi">Prioritas Tinggi 🔥</option>
+                                    <option value="Sedang">Prioritas Sedang ⚡</option>
+                                    <option value="Rendah">Prioritas Rendah 🌱</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tasks List Container -->
+                        <div id="tasks-list" class="d-flex flex-column gap-3" style="max-height: 500px; overflow-y: auto; padding-right: 4px;">
+                            <!-- Dynamically Inserted Tasks -->
+                        </div>
+                        
+                        <div id="no-tasks-msg" class="text-center py-5 d-none">
+                            <i class="bi bi-emoji-smile text-muted fs-1 mb-2 d-block"></i>
+                            <p class="text-muted-custom m-0 fs-6">Semua tugas beres! Waktunya relaksasi atau asah skill.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 3: TRACKER RUTINITAS -->
+                <div id="view-tracker-rutinitas" class="tab-content d-none animate__animated animate__fadeIn">
+                    <div class="glass-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-calendar-check text-cyan fs-4"></i>
+                                <h4 class="fw-bold m-0 fs-5">Tracker Rutinitas Belajar</h4>
+                            </div>
+                            <button class="btn btn-glass btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+                                <i class="bi bi-plus"></i> Kebiasaan Baru
+                            </button>
+                        </div>
+                        <p class="text-muted-custom small mb-4">Centang setiap hari ketika Anda sukses melakukan rutinitas. Dapat +5 XP per centangan!</p>
+
+                        <div id="habits-container" class="d-flex flex-column gap-4">
+                            <!-- Dynamically Generated Habits -->
+                        </div>
+
+                        <div id="no-habits-msg" class="text-center py-4 d-none">
+                            <p class="text-muted-custom m-0 small">Belum ada kebiasaan yang dilacak. Klik "+ Kebiasaan Baru" di atas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: CATATAN BELAJAR -->
+                <div id="view-catatan" class="tab-content d-none animate__animated animate__fadeIn">
+                    <div class="row g-4">
+                        <!-- Left Side: Saved Notes List -->
+                        <div class="col-lg-4">
+                            <div class="glass-card p-4 h-100 d-flex flex-column" style="min-height: 500px;">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="fw-bold m-0 fs-5 text-white"><i class="bi bi-journals text-cyan me-1"></i> Daftar Catatan</h4>
+                                    <button class="btn btn-cyan btn-sm" id="btn-new-note"><i class="bi bi-plus-lg"></i> Baru</button>
+                                </div>
+                                <div class="position-relative mb-3">
+                                    <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+                                    <input type="text" id="search-notes" class="form-control ps-5 py-2" placeholder="Cari catatan...">
+                                </div>
+                                <div id="notes-list" class="d-flex flex-column gap-2 flex-grow-1 overflow-y-auto" style="max-height: 380px;">
+                                    <!-- Saved notes injected here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Note Editor -->
+                        <div class="col-lg-8">
+                            <div class="glass-card p-4 h-100 d-flex flex-column" style="min-height: 500px;">
+                                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary border-opacity-10 pb-3">
+                                    <h4 class="fw-bold m-0 fs-5 text-white"><i class="bi bi-pencil-square text-cyan me-1"></i> Tulis Catatan</h4>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-danger btn-sm border-0" id="btn-delete-note" title="Hapus"><i class="bi bi-trash-fill fs-5"></i></button>
+                                        <button class="btn btn-cyan btn-sm px-4" id="btn-save-note"><i class="bi bi-floppy-fill me-1"></i> Simpan</button>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-8">
+                                        <label class="form-label text-white-50 small fw-semibold">Judul Catatan</label>
+                                        <input type="text" id="note-title" class="form-control" placeholder="Contoh: Rumus Matematika Diskrit">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label text-white-50 small fw-semibold">Kategori</label>
+                                        <select id="note-category" class="form-select">
+                                            <option value="Kuliah">Kuliah 🎓</option>
+                                            <option value="Materi">Materi 📖</option>
+                                            <option value="Tugas">Tugas 📝</option>
+                                            <option value="Selingan">Selingan 💡</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-label text-white-50 small fw-semibold">Isi Catatan</label>
+                                    <textarea id="note-content" class="form-control w-100 h-100" style="min-height: 280px; resize: none; font-family: 'JetBrains Mono', monospace;" placeholder="Ketik catatan penting Anda di sini secara lengkap..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: DEEP WORK SHIELD -->
+                <div id="view-deep-work" class="tab-content d-none animate__animated animate__fadeIn">
+                    <div class="glass-card p-5 text-center relative-overflow" style="border: 1px solid rgba(56, 189, 248, 0.25);">
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                            <i class="bi bi-shield-shaded text-cyan fs-3"></i>
+                            <h4 class="fw-bold m-0 fs-4">Deep Work Shield</h4>
+                        </div>
+                        <p class="text-muted-custom fs-5 px-lg-5">Isolasi ponsel Anda dari distraksi. Masuk ke mode fullscreen hitam pekat yang elegan dengan stimulasi audio fokus binaural buatan.</p>
+                        
+                        <!-- Timer Configuration inside Dashboard Card -->
+                        <div class="my-5 d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                            <div class="d-flex flex-column text-start">
+                                <label class="text-white-50 small mb-2 fw-bold">Durasi Sesi</label>
+                                <select id="zen-duration-select" class="form-select text-center py-2.5" style="width: 180px;">
+                                    <option value="1">1 Menit (Tes)</option>
+                                    <option value="15">15 Menit</option>
+                                    <option value="25" selected>25 Menit (Pomodoro)</option>
+                                    <option value="45">45 Menit</option>
+                                    <option value="60">60 Menit</option>
+                                </select>
+                            </div>
+                            <div class="d-flex flex-column text-start">
+                                <label class="text-white-50 small mb-2 fw-bold">Audio Ambient</label>
+                                <select id="zen-audio-select" class="form-select text-center py-2.5" style="width: 200px;">
+                                    <option value="silent">Hening</option>
+                                    <option value="white">White Noise (Tajam)</option>
+                                    <option value="brown">Brown Noise (Hangat)</option>
+                                    <option value="ocean">Deru Ombak (Siklik)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button id="btn-activate-zen" class="btn btn-cyan px-5 py-3.5 d-flex align-items-center justify-content-center gap-2 fs-5 mx-auto">
+                            <i class="bi bi-lightning-charge-fill"></i> Aktifkan Perisai Zen
+                        </button>
+                        <span class="text-muted d-block mt-4" style="font-size: 0.8rem;"><i class="bi bi-info-circle me-1"></i> Membutuhkan izin layar penuh browser untuk bekerja optimal</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ZEN OVERLAY (FULLSCREEN DIAL) -->
+    <div id="zen-overlay">
+        <canvas id="visualizer-canvas"></canvas>
+        <button id="btn-exit-zen" class="btn btn-glass btn-sm position-absolute top-0 end-0 m-4 py-2 px-3" style="z-index: 10;">
+            <i class="bi bi-x-lg me-1"></i> Keluar Zen Mode
+        </button>
+        
+        <div class="text-center text-white mb-4 animate__animated animate__fadeIn" style="z-index: 10;">
+            <h1 class="fw-extrabold text-cyan" style="font-size: 2.5rem; letter-spacing: 2px;">MODE ZEN AKTIF</h1>
+            <p class="text-muted-custom fs-6">Distraksi Terblokir. Tarik napas dalam-dalam & fokus pada layar kerja Anda.</p>
+        </div>
+
+        <div class="zen-timer-circle animate__animated animate__zoomIn" style="z-index: 10;">
+            <div class="zen-glow-ring"></div>
+            <div class="text-center z-3">
+                <span id="zen-timer-countdown" class="d-block fw-extrabold text-white tracking-tight" style="font-size: 5rem; line-height: 1;">25:00</span>
+                <span class="text-cyan fw-bold mt-2 d-inline-block tracking-wider" id="zen-audio-playing-indicator" style="font-size: 0.85rem;">
+                    <i class="bi bi-volume-up"></i> Hening
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-5 text-center px-4 animate__animated animate__fadeInUp" style="max-width: 550px; z-index: 10;">
+            <p class="fst-italic text-muted-custom fs-5" id="zen-quote">"Fokus bukanlah tentang mengatakan ya untuk apa yang harus Anda kerjakan, melainkan mengatakan tidak untuk ratusan ide bagus lainnya."</p>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button id="btn-pause-zen" class="btn btn-glass px-4 py-2"><i class="bi bi-pause-fill"></i> Jeda</button>
+                <button id="btn-skip-zen" class="btn btn-outline-danger border-0 px-4 py-2" style="background: rgba(220,53,69,0.15)"><i class="bi bi-stop-fill"></i> Selesaikan Sesi</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL: TAMBAH TUGAS -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-secondary border-opacity-25" style="background: #0f172a;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+                        <i class="bi bi-bookmark-plus text-cyan"></i> Tambah Tugas Kuliah
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3">
+                    <form id="task-form">
+                        <div class="mb-3">
+                            <label for="task-title" class="form-label text-white-50 small fw-semibold">Judul Tugas / Nama Proyek</label>
+                            <input type="text" id="task-title" class="form-control" placeholder="Contoh: Laporan Praktikum Fisika" required>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label for="task-priority" class="form-label text-white-50 small fw-semibold">Prioritas</label>
+                                <select id="task-priority" class="form-select">
+                                    <option value="Tinggi">Tinggi 🔥</option>
+                                    <option value="Sedang" selected>Sedang ⚡</option>
+                                    <option value="Rendah">Rendah 🌱</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="task-deadline" class="form-label text-white-50 small fw-semibold">Deadline Tanggal</label>
+                                <input type="date" id="task-deadline" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-glass btn-sm px-3 me-2" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-cyan btn-sm px-4">Simpan Tugas</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL: TAMBAH KEBIASAAN (HABIT) -->
+    <div class="modal fade" id="addHabitModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-secondary border-opacity-25" style="background: #0f172a;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-white d-flex align-items-center gap-2">
+                        <i class="bi bi-activity text-cyan"></i> Tambah Kebiasaan Belajar
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3">
+                    <form id="habit-form">
+                        <div class="mb-3">
+                            <label for="habit-name" class="form-label text-white-50 small fw-semibold">Nama Kebiasaan</label>
+                            <input type="text" id="habit-name" class="form-control" placeholder="Contoh: Baca Jurnal 15 Menit, Coding" required>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="habit-mandatory">
+                            <label class="form-check-label text-white-50 small" for="habit-mandatory">Tandai sebagai Kebiasaan Wajib 🔥</label>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-glass btn-sm px-3 me-2" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-cyan btn-sm px-4">Mulai Lacak</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL: LEVEL UP CELEBRATION -->
+    <div class="modal fade" id="levelUpModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-5 glass-card border-info border-opacity-50" style="background: radial-gradient(circle, #0f172a 0%, #020617 100%);">
+                <div class="mb-3">
+                    <i class="bi bi-trophy-fill text-warning animate__animated animate__bounce" style="font-size: 5rem; filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));"></i>
+                </div>
+                <h1 class="fw-extrabold text-cyan" style="font-size: 2.8rem; letter-spacing: 1px;">LEVEL UP!</h1>
+                <p class="text-white-50 mt-2">Luar biasa! Konsistensi Anda menunjukkan hasil yang nyata.</p>
+                <h3 class="fw-bold text-white my-3" id="modal-level-text">Sekarang Anda Level 2</h3>
+                <p class="text-muted-custom small mb-4">"Investasi terbaik adalah investasi terhadap diri sendiri."</p>
+                <button class="btn btn-cyan px-5 py-2.5 mx-auto" data-bs-dismiss="modal">Lanjutkan Perjuangan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CUSTOM CONFIRM (CRITICAL FIX FOR UNCAUGHT TYPEERROR PREVENTING BROWSER RUNS) -->
+    <div class="modal fade" id="customConfirmModal" tabindex="-1" aria-hidden="true" style="z-index: 10060;">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content glass-card border-secondary border-opacity-25" style="background: #0f172a;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-white fs-6" id="confirm-modal-title">Konfirmasi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white-50 small py-3" id="confirm-modal-message">
+                    Apakah Anda yakin?
+                </div>
+                <div class="modal-footer border-0 pt-0 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-glass btn-sm px-3" id="btn-confirm-cancel">Batal</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3" id="btn-confirm-agree">Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Glassmorphic Toast Notification Container -->
+    <div class="toast-container"></div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Translate Script Loader -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'id',
+                includedLanguages: 'id,en,zh-CN', // Membatasi hanya untuk bahasa Indonesia, Inggris, dan Mandarin (Simplified)
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Custom PWA & Logical JS -->
+    <script>
+        // --- 1. LOCAL STORAGE STATE & INITIALIZATION ---
+        const STATE_KEYS = {
+            USER_INFO: 'tb_user_info',
+            TASKS: 'tb_tasks',
+            HABITS: 'tb_habits',
+            NOTES: 'tb_notes',
+            LOGGED_IN: 'tb_logged_in'
+        };
+
+        let state = {
+            user: {
+                name: 'Mahasiswa Hebat',
+                level: 1,
+                xp: 0,
+                completedTasksCount: 0,
+                totalZenMinutes: 0
+            },
+            tasks: [],
+            habits: [],
+            notes: [],
+            isLoggedIn: false
+        };
+
+        // Active Note tracking
+        let activeNoteId = null;
+
+        const zenQuotes = [
+            "\"Fokus bukanlah tentang mengatakan ya untuk apa yang harus Anda kerjakan, melainkan mengatakan tidak untuk ratusan ide bagus lainnya.\" - Steve Jobs",
+            "\"Disiplin adalah jembatan antara cita-cita dan pencapaian nyata.\"",
+            "\"Satu-satunya batasan untuk meraih hari esok adalah keraguan kita hari ini.\"",
+            "\"Kerjakan seolah-olah Anda tidak akan pernah mendapatkan kesempatan kedua.\"",
+            "\"Fokus penuh selama 25 menit jauh lebih berharga daripada 3 jam belajar sambil terus melihat HP.\"",
+            "\"Lelahmu hari ini adalah bekal indah masa depanmu. Tetap fokus!\""
+        ];
+
+        // Custom Notification Engine
+        function notify(title, message, type = 'info') {
+            const container = document.querySelector('.toast-container');
+            const toastId = 'toast_' + Date.now();
+            
+            const icon = type === 'success' ? 'bi-check-circle-fill text-success' : 'bi-info-circle-fill text-cyan';
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast glass-toast hide animate__animated animate__fadeInUp" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header bg-transparent border-0 text-white d-flex align-items-center gap-2 py-3 px-3">
+                        <i class="bi ${icon} fs-5"></i>
+                        <strong class="me-auto fw-bold">${title}</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body pt-0 pb-3 px-3 text-muted-custom">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', toastHTML);
+            const toastEl = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastEl, { delay: 5000 });
+            toast.show();
+            
+            toastEl.addEventListener('hidden.bs.toast', () => {
+                toastEl.remove();
+            });
+        }
+
+        // Custom Confirm Engine
+        let confirmPromiseResolver = null;
+        const confirmModal = new bootstrap.Modal(document.getElementById('customConfirmModal'));
+        
+        function customConfirm(title, message) {
+            document.getElementById('confirm-modal-title').textContent = title;
+            document.getElementById('confirm-modal-message').textContent = message;
+            confirmModal.show();
+            
+            return new Promise((resolve) => {
+                confirmPromiseResolver = resolve;
+            });
+        }
+
+        document.getElementById('btn-confirm-agree').addEventListener('click', () => {
+            confirmModal.hide();
+            if (confirmPromiseResolver) confirmPromiseResolver(true);
+        });
+
+        document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
+            confirmModal.hide();
+            if (confirmPromiseResolver) confirmPromiseResolver(false);
+        });
+
+        // --- 2. AUDIO SYNTHESIZER & REAL-TIME VISUALIZER (Web Audio API) ---
+        let audioCtx = null;
+        let noiseSource = null;
+        let noiseGain = null;
+        let lfo = null;
+        let animationFrameId = null;
+
+        const visCanvas = document.getElementById('visualizer-canvas');
+        const visCtx = visCanvas.getContext('2d');
+
+        function resizeVisualizerCanvas() {
+            visCanvas.width = window.innerWidth;
+            visCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeVisualizerCanvas);
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function createWhiteNoiseBuffer() {
+            const bufferSize = 2 * audioCtx.sampleRate;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            return noiseBuffer;
+        }
+
+        function createBrownNoiseBuffer() {
+            const bufferSize = 2 * audioCtx.sampleRate;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            let lastOut = 0.0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                output[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = output[i];
+                output[i] *= 3.5;
+            }
+            return noiseBuffer;
+        }
+
+        function startAmbientSound(type) {
+            initAudioContext();
+            stopAmbientSound();
+
+            if (type === 'silent') {
+                runVisualizer('silent');
+                return;
+            }
+
+            noiseGain = audioCtx.createGain();
+            noiseGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+
+            let buffer;
+            if (type === 'white') {
+                buffer = createWhiteNoiseBuffer();
+            } else if (type === 'brown' || type === 'ocean') {
+                buffer = createBrownNoiseBuffer();
+            }
+
+            noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = buffer;
+            noiseSource.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = type === 'white' ? 1000 : 400;
+
+            if (type === 'ocean') {
+                lfo = audioCtx.createOscillator();
+                lfo.frequency.setValueAtTime(0.08, audioCtx.currentTime);
+                
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+                lfo.connect(lfoGain);
+                lfoGain.connect(noiseGain.gain);
+                lfo.start();
+            }
+
+            noiseSource.connect(filter);
+            filter.connect(noiseGain);
+            noiseGain.connect(audioCtx.destination);
+            noiseSource.start();
+
+            runVisualizer(type);
+        }
+
+        function stopAmbientSound() {
+            if (noiseSource) {
+                try { noiseSource.stop(); } catch(e) {}
+                noiseSource.disconnect();
+                noiseSource = null;
+            }
+            if (lfo) {
+                try { lfo.stop(); } catch(e) {}
+                lfo.disconnect();
+                lfo = null;
+            }
+            if (noiseGain) {
+                noiseGain.disconnect();
+                noiseGain = null;
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            visCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
+        }
+
+        function runVisualizer(type) {
+            resizeVisualizerCanvas();
+            let phase = 0;
+            
+            function draw() {
+                visCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
+                visCtx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+                visCtx.lineWidth = 2;
+                visCtx.beginPath();
+                
+                let numPoints = 80;
+                let amplitude = type === 'silent' ? 5 : type === 'white' ? 40 : type === 'ocean' ? 25 : 15;
+                let frequency = type === 'silent' ? 0.01 : type === 'white' ? 0.4 : type === 'ocean' ? 0.05 : 0.15;
+                let speed = type === 'ocean' ? 0.02 : 0.15;
+
+                for (let i = 0; i <= numPoints; i++) {
+                    let x = (visCanvas.width / numPoints) * i;
+                    let waveValue = Math.sin(i * frequency + phase);
+                    
+                    if (type !== 'silent') {
+                        waveValue += (Math.random() - 0.5) * 0.2;
+                    }
+
+                    let y = (visCanvas.height / 2) + waveValue * amplitude * Math.sin(phase * 0.1);
+                    if (i === 0) visCtx.moveTo(x, y);
+                    else visCtx.lineTo(x, y);
+                }
+                
+                visCtx.stroke();
+                phase += speed;
+                animationFrameId = requestAnimationFrame(draw);
+            }
+            
+            draw();
+        }
+
+        // --- 3. CONFETTI ANIMATION ENGINE ---
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiActive = false;
+        let confettiArray = [];
+
+        function resizeConfettiCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeConfettiCanvas);
+
+        class ConfettiParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 6;
+                this.color = `hsl(${Math.random() * 360}, 90%, 65%)`;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 2 - 1;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function triggerConfetti() {
+            resizeConfettiCanvas();
+            confettiArray = [];
+            for (let i = 0; i < 120; i++) {
+                confettiArray.push(new ConfettiParticle());
+            }
+            canvas.style.display = 'block';
+            confettiActive = true;
+            animateConfetti();
+            setTimeout(() => {
+                confettiActive = false;
+                canvas.style.display = 'none';
+            }, 6000);
+        }
+
+        function animateConfetti() {
+            if (!confettiActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+
+        function playLevelUpChime() {
+            initAudioContext();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.type = 'sine';
+            const now = audioCtx.currentTime;
+            
+            osc.frequency.setValueAtTime(523.25, now);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.15, now + 0.1);
+            
+            osc.frequency.setValueAtTime(659.25, now + 0.15);
+            osc.frequency.setValueAtTime(783.99, now + 0.3);
+            osc.frequency.setValueAtTime(1046.50, now + 0.45);
+            
+            gain.gain.setValueAtTime(0.15, now + 0.45);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+            
+            osc.start(now);
+            osc.stop(now + 1.3);
+        }
+
+        // --- 4. GAMIFICATION SYSTEM (XP & LEVEL) ---
+        function awardXP(amount, reason = "") {
+            state.user.xp += amount;
+            let neededXP = state.user.level * 100;
+            let leveledUp = false;
+            
+            while (state.user.xp >= neededXP) {
+                state.user.xp -= neededXP;
+                state.user.level++;
+                neededXP = state.user.level * 100;
+                leveledUp = true;
+            }
+
+            saveStateToLocalStorage();
+            updateUIGamification();
+
+            if (reason) {
+                notify("XP Diperoleh!", `+${amount} XP: ${reason}`, 'success');
+            }
+
+            if (leveledUp) {
+                document.getElementById('modal-level-text').textContent = `Sekarang Anda Level ${state.user.level}`;
+                const levelUpModal = new bootstrap.Modal(document.getElementById('levelUpModal'));
+                levelUpModal.show();
+                triggerConfetti();
+                playLevelUpChime();
+            }
+        }
+
+        function updateUIGamification() {
+            document.getElementById('user-display-level').textContent = `Level ${state.user.level}`;
+            const neededXP = state.user.level * 100;
+            const percentage = (state.user.xp / neededXP) * 100;
+            document.getElementById('user-display-xp-bar').style.width = `${percentage}%`;
+            
+            document.getElementById('stats-tasks-completed').textContent = state.user.completedTasksCount || 0;
+            document.getElementById('stats-zen-minutes').textContent = state.user.totalZenMinutes || 0;
+            
+            const initial = state.user.name ? state.user.name.charAt(0).toUpperCase() : 'M';
+            document.getElementById('avatar-initial').textContent = initial;
+            document.getElementById('greet-name').textContent = state.user.name || 'Mahasiswa Hebat';
+            
+            // Sidebar Profile Sync
+            document.getElementById('sidebar-user-name').textContent = state.user.name || 'User';
+            document.getElementById('sidebar-user-level').textContent = `Level ${state.user.level}`;
+        }
+
+        // --- 5. TUGAS (TASK MANAGEMENT) ENGINE ---
+        const tasksListContainer = document.getElementById('tasks-list');
+        const noTasksMsg = document.getElementById('no-tasks-msg');
+
+        function renderTasks() {
+            const searchQuery = document.getElementById('search-task').value.toLowerCase();
+            const filterPriority = document.getElementById('filter-priority').value;
+
+            tasksListContainer.innerHTML = '';
+
+            const filteredTasks = state.tasks.filter(task => {
+                const matchesSearch = task.title.toLowerCase().includes(searchQuery);
+                const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;
+                return matchesSearch && matchesPriority;
+            });
+
+            const priorityWeight = { 'Tinggi': 3, 'Sedang': 2, 'Rendah': 1 };
+            filteredTasks.sort((a, b) => {
+                if (priorityWeight[b.priority] !== priorityWeight[a.priority]) {
+                    return priorityWeight[b.priority] - priorityWeight[a.priority];
+                }
+                return new Date(a.deadline) - new Date(b.deadline);
+            });
+
+            if (filteredTasks.length === 0) {
+                noTasksMsg.classList.remove('d-none');
+            } else {
+                noTasksMsg.classList.add('d-none');
+                
+                filteredTasks.forEach(task => {
+                    const taskCard = document.createElement('div');
+                    taskCard.className = `task-item-card animate__animated animate__fadeIn`;
+
+                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                    const deadlineDate = new Date(task.deadline);
+                    const deadlineFormatted = deadlineDate.toLocaleDateString('id-ID', options);
+                    
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    const diffTime = deadlineDate - today;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    let deadlineClass = 'text-muted-custom';
+                    let dayCounterStr = '';
+                    if (diffDays < 0) {
+                        dayCounterStr = '(Terlambat)';
+                        deadlineClass = 'text-danger fw-bold';
+                    } else if (diffDays === 0) {
+                        dayCounterStr = '(Hari ini!)';
+                        deadlineClass = 'text-warning fw-bold';
+                    } else if (diffDays <= 2) {
+                        dayCounterStr = `(${diffDays} hari lagi)`;
+                        deadlineClass = 'text-warning';
+                    } else {
+                        dayCounterStr = `(${diffDays} hari lagi)`;
+                    }
+
+                    taskCard.innerHTML = `
+                        <div class="d-flex align-items-center gap-3 flex-grow-1">
+                            <button class="btn btn-outline-info rounded-circle d-flex align-items-center justify-content-center" 
+                                    style="width: 28px; height: 28px; border: 1.5px solid rgba(56,189,248,0.7)"
+                                    onclick="completeTask('${task.id}')" title="Selesaikan Tugas">
+                                <i class="bi bi-check-lg" style="opacity: 0; font-size: 0.95rem; transition: opacity 0.2s;"></i>
+                            </button>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-white fs-6">${task.title}</h6>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <span class="badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+                                    <span class="small ${deadlineClass}" style="font-size: 0.8rem;">
+                                        <i class="bi bi-calendar-event me-1"></i>${deadlineFormatted} ${dayCounterStr}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-outline-danger btn-sm border-0 p-2" onclick="deleteTask('${task.id}')" title="Hapus">
+                                <i class="bi bi-trash3-fill fs-5"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    const checkBtn = taskCard.querySelector('.btn-outline-info');
+                    const checkIcon = checkBtn.querySelector('.bi-check-lg');
+                    checkBtn.addEventListener('mouseenter', () => checkIcon.style.opacity = '1');
+                    checkBtn.addEventListener('mouseleave', () => checkIcon.style.opacity = '0');
+
+                    tasksListContainer.appendChild(taskCard);
+                });
+            }
+
+            // Sync with dashboard reminders
+            renderDashboardWidgets();
+        }
+
+        function addTask(title, priority, deadline) {
+            const newTask = {
+                id: 'task_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9),
+                title,
+                priority,
+                deadline
+            };
+
+            state.tasks.push(newTask);
+            saveStateToLocalStorage();
+            renderTasks();
+            awardXP(10, "Berkomitmen menambah tugas baru!");
+        }
+
+        function completeTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            state.user.completedTasksCount = (state.user.completedTasksCount || 0) + 1;
+            saveStateToLocalStorage();
+            renderTasks();
+            awardXP(25, "Menyelesaikan tugas kuliah!");
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            saveStateToLocalStorage();
+            renderTasks();
+            notify("Tugas Dihapus", "Tugas Anda telah dihapus dengan sukses.");
+        }
+
+        // --- 6. HABIT TRACKER ENGINE ---
+        const habitsContainer = document.getElementById('habits-container');
+        const noHabitsMsg = document.getElementById('no-habits-msg');
+        const daysShort = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+        function renderHabits() {
+            habitsContainer.innerHTML = '';
+            
+            if (state.habits.length === 0) {
+                noHabitsMsg.classList.remove('d-none');
+                return;
+            }
+            noHabitsMsg.classList.add('d-none');
+
+            state.habits.forEach(habit => {
+                const habitCard = document.createElement('div');
+                habitCard.className = 'glass-card p-3 animate__animated animate__fadeIn';
+                habitCard.style.background = 'rgba(15, 23, 42, 0.4)';
+
+                let gridHTML = '';
+                daysShort.forEach((day, index) => {
+                    const isCompleted = habit.progress[index];
+                    const activeClass = isCompleted ? 'completed' : '';
+                    const mark = isCompleted ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-circle"></i>';
+                    
+                    gridHTML += `
+                        <div class="habit-day-btn ${activeClass}" onclick="toggleHabitDay('${habit.id}', ${index})" title="${day}">
+                            <span class="day-label">${day}</span>
+                            <span class="day-status">${mark}</span>
+                        </div>
+                    `;
+                });
+
+                const mandatoryBadge = habit.mandatory ? '<span class="badge priority-tinggi ms-2" style="font-size:0.7rem;">Wajib</span>' : '';
+
+                habitCard.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-extrabold text-white fs-6">${habit.name} ${mandatoryBadge}</span>
+                        <button class="btn btn-sm btn-outline-danger border-0 p-1" onclick="deleteHabit('${habit.id}')" style="line-height:1;">
+                            <i class="bi bi-trash-fill" style="font-size: 0.9rem;"></i>
+                        </button>
+                    </div>
+                    <div class="habit-grid">
+                        ${gridHTML}
+                    </div>
+                `;
+
+                habitsContainer.appendChild(habitCard);
+            });
+
+            // Sync with dashboard habits summaries
+            renderDashboardWidgets();
+        }
+
+        function addHabit(name, mandatory = false) {
+            const newHabit = {
+                id: 'habit_' + Date.now(),
+                name,
+                mandatory,
+                progress: [false, false, false, false, false, false, false]
+            };
+            state.habits.push(newHabit);
+            saveStateToLocalStorage();
+            renderHabits();
+            notify("Kebiasaan Dilacak", "Fokus bangun rutinitas positif!");
+        }
+
+        function toggleHabitDay(habitId, dayIndex) {
+            const habit = state.habits.find(h => h.id === habitId);
+            if (habit) {
+                habit.progress[dayIndex] = !habit.progress[dayIndex];
+                
+                if (habit.progress[dayIndex]) {
+                    awardXP(5, "Melakukan kebiasaan positif!");
+                } else {
+                    notify("Latihan Dikurangi", "Poin dibatalkan.");
+                }
+                
+                saveStateToLocalStorage();
+                renderHabits();
+            }
+        }
+
+        function deleteHabit(habitId) {
+            state.habits = state.habits.filter(h => h.id !== habitId);
+            saveStateToLocalStorage();
+            renderHabits();
+            notify("Kebiasaan Dihapus", "Kebiasaan telah dihapus dari pelacak.");
+        }
+
+
+        // --- 7. DEEP WORK SHIELD TIMER ENGINE ---
+        let zenTimerInterval = null;
+        let zenTotalSeconds = 0;
+        let zenSecondsRemaining = 0;
+        let isZenPaused = false;
+        let activeZenAudioType = 'silent';
+
+        const zenOverlay = document.getElementById('zen-overlay');
+        const zenTimerCountdown = document.getElementById('zen-timer-countdown');
+        const zenAudioPlayingIndicator = document.getElementById('zen-audio-playing-indicator');
+        const btnActivateZen = document.getElementById('btn-activate-zen');
+        const btnExitZen = document.getElementById('btn-exit-zen');
+        const btnPauseZen = document.getElementById('btn-pause-zen');
+        const btnSkipZen = document.getElementById('btn-skip-zen');
+
+        function startZenMode() {
+            const durationMinutes = parseInt(document.getElementById('zen-duration-select').value);
+            activeZenAudioType = document.getElementById('zen-audio-select').value;
+            
+            zenTotalSeconds = durationMinutes * 60;
+            zenSecondsRemaining = zenTotalSeconds;
+            isZenPaused = false;
+
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen().catch(() => {});
+            } else if (docEl.webkitRequestFullscreen) {
+                docEl.webkitRequestFullscreen();
+            }
+
+            startAmbientSound(activeZenAudioType);
+            updateZenTimerDisplay();
+            updateZenAudioIndicatorText();
+            
+            document.getElementById('zen-quote').textContent = zenQuotes[Math.floor(Math.random() * zenQuotes.length)];
+
+            zenOverlay.style.display = 'flex';
+            btnPauseZen.innerHTML = '<i class="bi bi-pause-fill"></i> Jeda';
+
+            if (zenTimerInterval) clearInterval(zenTimerInterval);
+            zenTimerInterval = setInterval(tickZenTimer, 1000);
+        }
+
+        function tickZenTimer() {
+            if (isZenPaused) return;
+
+            zenSecondsRemaining--;
+            updateZenTimerDisplay();
+
+            if ((zenTotalSeconds - zenSecondsRemaining) % 60 === 0) {
+                state.user.totalZenMinutes = (state.user.totalZenMinutes || 0) + 1;
+                awardXP(10, "Menyelesaikan 1 menit fokus penuh!");
+            }
+
+            if (zenSecondsRemaining <= 0) {
+                finishZenMode(true);
+            }
+        }
+
+        function updateZenTimerDisplay() {
+            const minutes = Math.floor(zenSecondsRemaining / 60);
+            const seconds = zenSecondsRemaining % 60;
+            zenTimerCountdown.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateZenAudioIndicatorText() {
+            const audios = {
+                silent: 'Hening',
+                white: 'White Noise',
+                brown: 'Brown Noise',
+                ocean: 'Deru Ombak'
+            };
+            zenAudioPlayingIndicator.innerHTML = `<i class="bi bi-volume-up-fill"></i> Ambient: ${audios[activeZenAudioType]}`;
+        }
+
+        function togglePauseZen() {
+            isZenPaused = !isZenPaused;
+            if (isZenPaused) {
+                btnPauseZen.innerHTML = '<i class="bi bi-play-fill"></i> Lanjutkan';
+                stopAmbientSound();
+            } else {
+                btnPauseZen.innerHTML = '<i class="bi bi-pause-fill"></i> Jeda';
+                startAmbientSound(activeZenAudioType);
+            }
+        }
+
+        function finishZenMode(isComplete) {
+            clearInterval(zenTimerInterval);
+            stopAmbientSound();
+            
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => {});
+            }
+
+            zenOverlay.style.display = 'none';
+
+            if (isComplete) {
+                awardXP(50, "Sukses menyelesaikan sesi Deep Work!");
+                notify("Sesi Sukses!", "Selamat! Anda fokus penuh tanpa distraksi.", 'success');
+            }
+            saveStateToLocalStorage();
+            updateUIGamification();
+        }
+
+        // --- 8. CATATAN BELAJAR (BELAJAR NOTES) ENGINE ---
+        const notesListContainer = document.getElementById('notes-list');
+        const noteTitleInput = document.getElementById('note-title');
+        const noteCategorySelect = document.getElementById('note-category');
+        const noteContentTextarea = document.getElementById('note-content');
+        const searchNotesInput = document.getElementById('search-notes');
+
+        function renderNotes() {
+            notesListContainer.innerHTML = '';
+            const query = searchNotesInput.value.toLowerCase();
+
+            const filteredNotes = state.notes.filter(n => n.title.toLowerCase().includes(query) || n.content.toLowerCase().includes(query));
+
+            if (filteredNotes.length === 0) {
+                notesListContainer.innerHTML = `<span class="text-muted small text-center py-3">Tidak ada catatan ditemukan.</span>`;
+                return;
+            }
+
+            filteredNotes.forEach(note => {
+                const item = document.createElement('div');
+                item.className = `note-list-item ${activeNoteId === note.id ? 'active' : ''}`;
+                
+                const date = new Date(note.updatedAt || note.id);
+                const timeStr = date.toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
+
+                item.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start">
+                        <span class="fw-bold text-white text-truncate" style="max-width: 140px;">${note.title || 'Tanpa Judul'}</span>
+                        <span class="badge bg-secondary bg-opacity-25 text-white-50" style="font-size: 0.65rem;">${note.category}</span>
+                    </div>
+                    <span class="text-muted-custom small d-block mt-1">${timeStr}</span>
+                `;
+
+                item.addEventListener('click', () => {
+                    selectNote(note.id);
+                });
+
+                notesListContainer.appendChild(item);
+            });
+        }
+
+        function selectNote(noteId) {
+            activeNoteId = noteId;
+            const note = state.notes.find(n => n.id === noteId);
+            if (note) {
+                noteTitleInput.value = note.title;
+                noteCategorySelect.value = note.category;
+                noteContentTextarea.value = note.content;
+            }
+            renderNotes();
+        }
+
+        function createNewNote() {
+            const newId = 'note_' + Date.now();
+            const newNote = {
+                id: newId,
+                title: 'Catatan Baru',
+                category: 'Kuliah',
+                content: '',
+                updatedAt: Date.now()
+            };
+            state.notes.push(newNote);
+            activeNoteId = newId;
+            saveStateToLocalStorage();
+            renderNotes();
+            selectNote(newId);
+        }
+
+        function saveActiveNote() {
+            const note = state.notes.find(n => n.id === activeNoteId);
+            if (note) {
+                note.title = noteTitleInput.value.trim() || 'Tanpa Judul';
+                note.category = noteCategorySelect.value;
+                note.content = noteContentTextarea.value;
+                note.updatedAt = Date.now();
+                saveStateToLocalStorage();
+                renderNotes();
+                notify("Catatan Disimpan", "Catatan belajar Anda berhasil disimpan.");
+            } else {
+                notify("Gagal Menyimpan", "Buat atau pilih catatan terlebih dahulu.");
+            }
+        }
+
+        function deleteActiveNote() {
+            if (!activeNoteId) return;
+            state.notes = state.notes.filter(n => n.id !== activeNoteId);
+            activeNoteId = state.notes.length > 0 ? state.notes[0].id : null;
+            saveStateToLocalStorage();
+            renderNotes();
+            if (activeNoteId) {
+                selectNote(activeNoteId);
+            } else {
+                noteTitleInput.value = '';
+                noteCategorySelect.value = 'Kuliah';
+                noteContentTextarea.value = '';
+            }
+            notify("Catatan Dihapus", "Catatan berhasil dibuang.");
+        }
+
+
+        // --- 9. DASHBOARD WIDGETS AND REMINDERS SYSTEM ---
+        function renderDashboardWidgets() {
+            // Task Reminders Widget
+            const dashboardReminders = document.getElementById('dashboard-task-reminders');
+            dashboardReminders.innerHTML = '';
+            
+            // Filter only pending/unfinished tasks
+            const pendingTasks = [...state.tasks];
+            
+            if (pendingTasks.length === 0) {
+                dashboardReminders.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="bi bi-emoji-sunglasses text-cyan fs-2 d-block mb-1"></i>
+                        <span class="text-muted-custom small">Bebas beban! Tidak ada tugas mendesak hari ini.</span>
+                    </div>
+                `;
+            } else {
+                // Sort by deadline closest
+                pendingTasks.sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
+                const topReminders = pendingTasks.slice(0, 3);
+                
+                topReminders.forEach(task => {
+                    const deadlineDate = new Date(task.deadline);
+                    const deadlineStr = deadlineDate.toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
+                    
+                    const container = document.createElement('div');
+                    container.className = 'd-flex justify-content-between align-items-center p-3 rounded-4 bg-dark bg-opacity-40 border border-secondary border-opacity-10';
+                    container.innerHTML = `
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-clock-history text-warning fs-5"></i>
+                            <div>
+                                <span class="fw-bold text-white d-block small">${task.title}</span>
+                                <span class="badge priority-${task.priority.toLowerCase()} mt-1" style="font-size:0.65rem;">${task.priority}</span>
+                            </div>
+                        </div>
+                        <span class="text-warning fw-bold small"><i class="bi bi-calendar-event me-1"></i>${deadlineStr}</span>
+                    `;
+                    dashboardReminders.appendChild(container);
+                });
+            }
+
+            // Habits & Materials Progress Tracker
+            const habitsDoneContainer = document.getElementById('habits-done-list');
+            const habitsPendingContainer = document.getElementById('habits-pending-list');
+            const habitsMandatoryContainer = document.getElementById('habits-mandatory-list');
+
+            habitsDoneContainer.innerHTML = '';
+            habitsPendingContainer.innerHTML = '';
+            habitsMandatoryContainer.innerHTML = '';
+
+            // Get current day index (0 = Monday, ..., 6 = Sunday)
+            const todayIndex = (new Date().getDay() + 6) % 7;
+
+            let countDone = 0;
+            let countPending = 0;
+            let countMandatory = 0;
+
+            state.habits.forEach(habit => {
+                const isCompletedToday = habit.progress[todayIndex];
+                
+                const item = document.createElement('div');
+                item.className = 'd-flex align-items-center gap-2 mb-1';
+
+                if (isCompletedToday) {
+                    item.innerHTML = `<i class="bi bi-check-circle-fill text-success"></i> <span class="text-white-50 text-truncate" style="max-width:130px;">${habit.name}</span>`;
+                    habitsDoneContainer.appendChild(item);
+                    countDone++;
+                } else {
+                    item.innerHTML = `<i class="bi bi-circle text-muted"></i> <span class="text-white-50 text-truncate" style="max-width:130px;">${habit.name}</span>`;
+                    habitsPendingContainer.appendChild(item);
+                    countPending++;
+                }
+
+                if (habit.mandatory) {
+                    const mandItem = document.createElement('div');
+                    mandItem.className = 'd-flex align-items-center gap-2 mb-1';
+                    const markIcon = isCompletedToday ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-exclamation-triangle-fill text-warning"></i>';
+                    mandItem.innerHTML = `${markIcon} <span class="text-white-50 text-truncate" style="max-width:130px;">${habit.name}</span>`;
+                    habitsMandatoryContainer.appendChild(mandItem);
+                    countMandatory++;
+                }
+            });
+
+            if (countDone === 0) habitsDoneContainer.innerHTML = `<span class="text-muted-custom small">Belum ada.</span>`;
+            if (countPending === 0) habitsPendingContainer.innerHTML = `<span class="text-muted-custom small">Semua selesai! 🌟</span>`;
+            if (countMandatory === 0) habitsMandatoryContainer.innerHTML = `<span class="text-muted-custom small">Tidak ada yang wajib.</span>`;
+        }
+
+        // Motivasi / Quotes Cycler
+        const quotesPool = [
+            { text: "\"Masa depan adalah milik mereka yang mempersiapkan hari ini.\"", author: "Malcolm X" },
+            { text: "\"Investasi dalam pengetahuan menghasilkan bunga terbaik.\"", author: "Benjamin Franklin" },
+            { text: "\"Pendidikan bukanlah persiapan untuk hidup; pendidikan adalah hidup itu sendiri.\"", author: "John Dewey" },
+            { text: "\"Rahasia untuk maju adalah dengan memulai.\"", author: "Mark Twain" },
+            { text: "\"Fokuslah pada proses, bukan hanya pada hasil akhir belajar Anda.\"", author: "temanbelajar.id" },
+            { text: "\"Jangan biarkan apa yang tidak dapat Anda lakukan mengganggu apa yang dapat Anda lakukan.\"", author: "John Wooden" }
+        ];
+
+        function refreshDashboardQuote() {
+            const randomQuote = quotesPool[Math.floor(Math.random() * quotesPool.length)];
+            document.getElementById('dashboard-quote-text').textContent = randomQuote.text;
+            document.getElementById('dashboard-quote-author').textContent = `- ${randomQuote.author}`;
+        }
+
+
+        // --- 10. LOCAL STORAGE & PERSISTENCE ---
+        function loadStateFromLocalStorage() {
+            const localUser = localStorage.getItem(STATE_KEYS.USER_INFO);
+            const localTasks = localStorage.getItem(STATE_KEYS.TASKS);
+            const localHabits = localStorage.getItem(STATE_KEYS.HABITS);
+            const localNotes = localStorage.getItem(STATE_KEYS.NOTES);
+            const localLoggedIn = localStorage.getItem(STATE_KEYS.LOGGED_IN);
+
+            if (localUser) {
+                state.user = JSON.parse(localUser);
+            }
+
+            if (localTasks) state.tasks = JSON.parse(localTasks);
+            if (localHabits) state.habits = JSON.parse(localHabits);
+            if (localNotes) {
+                state.notes = JSON.parse(localNotes);
+                if (state.notes.length > 0) {
+                    activeNoteId = state.notes[0].id;
+                }
+            }
+
+            if (localLoggedIn === 'true') {
+                state.isLoggedIn = true;
+                enterApplication();
+            } else {
+                state.isLoggedIn = false;
+                showLoginScreen();
+            }
+        }
+
+        function saveStateToLocalStorage() {
+            localStorage.setItem(STATE_KEYS.USER_INFO, JSON.stringify(state.user));
+            localStorage.setItem(STATE_KEYS.TASKS, JSON.stringify(state.tasks));
+            localStorage.setItem(STATE_KEYS.HABITS, JSON.stringify(state.habits));
+            localStorage.setItem(STATE_KEYS.NOTES, JSON.stringify(state.notes));
+            localStorage.setItem(STATE_KEYS.LOGGED_IN, state.isLoggedIn ? 'true' : 'false');
+        }
+
+
+        // --- 11. LOGIN & TAB NAVIGATION ENGINE ---
+        const loginScreen = document.getElementById('login-screen');
+        const appWrapper = document.getElementById('app-wrapper');
+        const sidebar = document.getElementById('sidebar');
+        const mainContentWrapper = document.getElementById('main-content-wrapper');
+
+        function showLoginScreen() {
+            state.isLoggedIn = false;
+            saveStateToLocalStorage();
+            appWrapper.classList.add('d-none');
+            loginScreen.style.display = 'flex';
+            loginScreen.classList.remove('animate__fadeOut');
+            loginScreen.classList.add('animate__fadeIn');
+        }
+
+        function enterApplication() {
+            state.isLoggedIn = true;
+            saveStateToLocalStorage();
+            
+            loginScreen.classList.add('animate__fadeOut');
+            setTimeout(() => {
+                loginScreen.style.display = 'none';
+                appWrapper.classList.remove('d-none');
+                
+                // Initialize dynamic contents
+                updateUIGamification();
+                renderTasks();
+                renderHabits();
+                renderNotes();
+                refreshDashboardQuote();
+                if (activeNoteId) {
+                    selectNote(activeNoteId);
+                }
+                switchTab('dashboard');
+                
+                notify("Sesi Dimulai", `Selamat datang kembali, ${state.user.name}!`, 'success');
+            }, 500);
+        }
+
+        // Handle Login Submission
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('login-username').value.trim();
+            if (usernameInput) {
+                state.user.name = usernameInput;
+                enterApplication();
+            }
+        });
+
+        // Handle Logout
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            const confirmed = await customConfirm("Keluar Sesi", "Apakah Anda yakin ingin keluar? Sesi Anda akan dihentikan sementara.");
+            if (confirmed) {
+                showLoginScreen();
+            }
+        });
+
+        // Tab Switching Logic
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const navbarPageTitle = document.getElementById('navbar-page-title');
+
+        function switchTab(tabId) {
+            // Update active link class
+            sidebarLinks.forEach(link => {
+                if (link.dataset.tab === tabId) {
+                    link.classList.add('active');
+                    // Update Page Title
+                    navbarPageTitle.innerHTML = link.innerHTML;
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Show active tab, hide others
+            tabContents.forEach(content => {
+                const targetId = 'view-' + tabId;
+                if (content.id === targetId) {
+                    content.classList.remove('d-none');
+                } else {
+                    content.classList.add('d-none');
+                }
+            });
+
+            // Refresh Dashboard widgets specifically
+            if (tabId === 'dashboard') {
+                renderDashboardWidgets();
+            }
+
+            // Auto collapse sidebar on mobile after choosing a link
+            if (window.innerWidth < 992) {
+                sidebar.classList.remove('active');
+            }
+        }
+
+        // Bind Sidebar click events
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTab = link.dataset.tab;
+                switchTab(targetTab);
+            });
+        });
+
+        // Sidebar Toggle Logic (Hamburger Button)
+        const btnSidebarToggle = document.getElementById('btn-sidebar-toggle');
+        const btnCloseSidebarMobile = document.getElementById('btn-close-sidebar-mobile');
+
+        btnSidebarToggle.addEventListener('click', () => {
+            if (window.innerWidth >= 992) {
+                // On desktop, toggle full-width mode (collapse/expand margin)
+                mainContentWrapper.classList.toggle('full-width');
+                if (mainContentWrapper.classList.contains('full-width')) {
+                    sidebar.style.transform = 'translateX(-100%)';
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                }
+            } else {
+                // On mobile, slide sidebar in/out
+                sidebar.classList.toggle('active');
+            }
+        });
+
+        btnCloseSidebarMobile.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+
+        // --- 12. FORM SUBMISSIONS AND OTHER BINDINGS ---
+        document.getElementById('task-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('task-title').value;
+            const priority = document.getElementById('task-priority').value;
+            const deadline = document.getElementById('task-deadline').value;
+
+            addTask(title, priority, deadline);
+            
+            document.getElementById('task-form').reset();
+            bootstrap.Modal.getInstance(document.getElementById('addTaskModal')).hide();
+        });
+
+        document.getElementById('habit-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('habit-name').value;
+            const mandatory = document.getElementById('habit-mandatory').checked;
+            addHabit(name, mandatory);
+            
+            document.getElementById('habit-form').reset();
+            bootstrap.Modal.getInstance(document.getElementById('addHabitModal')).hide();
+        });
+
+        document.getElementById('search-task').addEventListener('input', renderTasks);
+        document.getElementById('filter-priority').addEventListener('change', renderTasks);
+
+        // Notes Tab Event Bindings
+        document.getElementById('btn-new-note').addEventListener('click', createNewNote);
+        document.getElementById('btn-save-note').addEventListener('click', saveActiveNote);
+        document.getElementById('btn-delete-note').addEventListener('click', deleteActiveNote);
+        searchNotesInput.addEventListener('input', renderNotes);
+
+        // Dashboard Quote Refresher Bind
+        document.getElementById('btn-refresh-quote').addEventListener('click', refreshDashboardQuote);
+
+        btnActivateZen.addEventListener('click', startZenMode);
+        btnExitZen.addEventListener('click', () => finishZenMode(false));
+        btnPauseZen.addEventListener('click', togglePauseZen);
+        btnSkipZen.addEventListener('click', async () => {
+            const choice = await customConfirm('Batalkan Sesi', 'Apakah Anda ingin membatalkan sesi fokus ini? Kemajuan menit sebelum ini akan tetap dihitung.');
+            if (choice) {
+                finishZenMode(false);
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStateFromLocalStorage();
+            resizeConfettiCanvas();
+            resizeVisualizerCanvas();
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && zenOverlay.style.display === 'flex') {
+                finishZenMode(false);
+            }
+        });
+
+        // Responsive adjustment on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 992) {
+                sidebar.classList.remove('active');
+                sidebar.style.transform = '';
+                mainContentWrapper.classList.remove('full-width');
+            }
+        });
+
+        // --- 13. INLINE PROGRESSIVE WEB APP (PWA) SERVICE WORKER ---
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'temanbelajar-cache-v4';
+                const ASSETS = [
+                    '/',
+                    '/index.html',
+                    'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap',
+                    'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+                    'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css'
+                ];
+
+                self.addEventListener('install', (e) => {
+                    e.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => {
+                            return cache.addAll(ASSETS);
+                        }).catch(() => {})
+                    );
+                });
+
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(
+                        caches.match(e.request).then((cachedResponse) => {
+                            return cachedResponse || fetch(e.request);
+                        })
+                    );
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob))
+                .then(() => console.log('Service Worker v4 aktif.'))
+                .catch(err => console.log('Service Worker error:', err));
+        }
+    </script>
+</body>
+</html>
